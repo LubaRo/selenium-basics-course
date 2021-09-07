@@ -7,20 +7,17 @@ import path from 'path'
     let driver = await new Builder().forBrowser('chrome').build();
 
     try {
-        const url = 'http://suninjuly.github.io/find_link_text';
+        const url = 'http://suninjuly.github.io/huge_form.html';
 
         await driver.get(url);
 
-        const link = await driver.findElement(By.partialLinkText('224592'))
-        await link.click();
+        const elems = await driver.findElements(By.tagName('input'))
 
-        await driver.findElement(By.tagName('input')).sendKeys('Ivan')
-        await driver.findElement(By.name('last_name')).sendKeys('Petrov')
-        await driver.findElement(By.className('city')).sendKeys('Smolensk')
-        await driver.findElement(By.id('country')).sendKeys('Smolensk')
+        for (const inputElem of elems) {
+            await inputElem.sendKeys('txt..')
+        }
         
         const button = await driver.findElement(By.css('button.btn'))
-        await button.sendKeys('Russia')
         await button.click()
     }
     finally{
