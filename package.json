@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "selenium-webdriver": "^4.0.0-rc-1"
+  },
+  "name": "qa-test-assigment",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
