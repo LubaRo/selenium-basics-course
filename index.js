@@ -7,9 +7,12 @@ import path from 'path'
     let driver = await new Builder().forBrowser('chrome').build();
 
     try {
-        const url = 'http://suninjuly.github.io/simple_form_find_task.html';
+        const url = 'http://suninjuly.github.io/find_link_text';
 
         await driver.get(url);
+
+        const link = await driver.findElement(By.partialLinkText('224592'))
+        await link.click();
 
         await driver.findElement(By.tagName('input')).sendKeys('Ivan')
         await driver.findElement(By.name('last_name')).sendKeys('Petrov')
