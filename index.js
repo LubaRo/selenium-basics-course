@@ -7,18 +7,28 @@ import path from 'path'
     let driver = await new Builder().forBrowser('chrome').build();
 
     try {
-        const url = 'https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_select_multiple';
+        const url = 'https://SunInJuly.github.io/execute_script.html';
 
         await driver.get(url);
 
-        const iframeElem = await driver.findElement(By.id('iframeResult'))
-        await driver.switchTo().frame(iframeElem);
-        const selectCar = await driver.findElement(By.id('cars'));
-        await selectCar.findElement(By.css('option[value="volvo"]')).click();
-        await selectCar.findElement(By.css('option[value="audi"]')).click();
+        const value = + await driver.findElement(By.id('input_value')).getText();
+        const result = Math.log(Math.abs(12*Math.sin(value)));
 
+        const scrollScript = "return arguments[0].scrollIntoView();";
 
-        await driver.findElement(By.css('input[type="submit"]')).click();
+        await driver.findElement(By.id('answer')).sendKeys(result.toString(10));
+
+        const checkboxInput = await driver.findElement(By.id('robotCheckbox'));
+        await driver.executeScript(scrollScript, checkboxInput);
+        await checkboxInput.click();
+
+        const radioInput = await driver.findElement(By.id('robotsRule'));
+        await driver.executeScript(scrollScript, radioInput);
+        radioInput.click();
+
+        const button = await driver.findElement(By.tagName('button'));
+        await driver.executeScript(scrollScript, button);
+        await button.click();
     }
     finally{
         await driver.sleep(5000);
