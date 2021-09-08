@@ -7,21 +7,18 @@ import path from 'path'
     let driver = await new Builder().forBrowser('chrome').build();
 
     try {
-        const url = 'http://suninjuly.github.io/alert_accept.html';
+        const url = 'http://suninjuly.github.io/redirect_accept.html';
 
         await driver.get(url);
         await driver.findElement(By.tagName('button')).click();
 
-        await driver.wait(until.alertIsPresent());
-
-        let alert = await driver.switchTo().alert();
-        await alert.accept();
+        const handles = await driver.getAllWindowHandles();
+        await driver.switchTo().window(handles[1]);
 
         const value = + await driver.findElement(By.id('input_value')).getText();
         const result = Math.log(Math.abs(12*Math.sin(value)));
 
         await driver.findElement(By.id('answer')).sendKeys(result);
-
         await driver.findElement(By.tagName('button')).click();
     }
     finally{
