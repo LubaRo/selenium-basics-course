@@ -7,16 +7,14 @@ import path from 'path'
     let driver = await new Builder().forBrowser('chrome').build();
 
     try {
-        const url = 'http://suninjuly.github.io/get_attribute.html';
+        const url = 'http://suninjuly.github.io/selects2.html';
 
         await driver.get(url);
 
-        const varX = await driver.findElement(By.id('treasure')).getAttribute('valuex');
-        const result = Math.log(Math.abs(12*Math.sin(Number(varX))));
+        const num1 = await driver.findElement(By.id('num1')).getText();
+        const num2 = await driver.findElement(By.id('num2')).getText();
 
-        await driver.findElement(By.id('answer')).sendKeys(result.toString(10));
-        await driver.findElement(By.id('robotCheckbox')).click();
-        await driver.findElement(By.id('robotsRule')).click();
+        await driver.findElement(By.id('dropdown')).sendKeys(Number(num1) + Number(num2));
 
         const button = await driver.findElement(By.css('button.btn[type="submit"]'));
         await button.click()
