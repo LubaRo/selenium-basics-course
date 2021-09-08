@@ -7,26 +7,33 @@ import path from 'path'
     let driver = await new Builder().forBrowser('chrome').build();
 
     try {
-        const url = 'http://suninjuly.github.io/registration1.html';
+        const url = 'http://suninjuly.github.io/math.html';
 
         await driver.get(url);
 
-        const firstBlock = await driver.findElement(By.className('first_block'));
-        await firstBlock.findElement(By.tagName('input')).sendKeys('Ivan')
-        await firstBlock.findElement(By.className('second_class')).findElement(By.tagName('input')).sendKeys('Petrov')
-        await firstBlock.findElement(By.className('third_class')).findElement(By.tagName('input')).sendKeys('some@mail.com')
-        
-        const secontBlock = await driver.findElement(By.className('second_block'));
-        await secontBlock.findElement(By.className('first_class')).findElement(By.tagName('input')).sendKeys('8-3213-123')
-        await secontBlock.findElement(By.className('second_class')).findElement(By.tagName('input')).sendKeys('address')
+        const varX = await driver.findElement(By.id('input_value')).getText();
+        const result = Math.log(Math.abs(12*Math.sin(Number(varX))));
 
-        const button = await driver.findElement(By.css('button.btn'))
+        await driver.findElement(By.id('answer')).sendKeys(result.toString(10));
+        await driver.findElement(By.id('robotCheckbox')).click();
+        await driver.findElement(By.id('robotsRule')).click();
+
+        const button = await driver.findElement(By.css('button.btn[type="submit"]'));
         await button.click()
     }
     finally{
+        await waitForNSeconds();
         driver.quit()
     }
 })();
+
+function waitForNSeconds(n = 10) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, n * 1000);
+    });
+  }
 
 function getWebdriverAbsolutePath(driverType = 'chromedriver') {
     const projectRootDirPath = path.resolve('./');
