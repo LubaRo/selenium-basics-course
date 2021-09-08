@@ -7,16 +7,20 @@ import path from 'path'
     let driver = await new Builder().forBrowser('chrome').build();
 
     try {
-        const url = 'http://suninjuly.github.io/file_input.html';
+        const url = 'http://suninjuly.github.io/alert_accept.html';
 
         await driver.get(url);
+        await driver.findElement(By.tagName('button')).click();
 
-        await driver.findElement(By.css('input[name="firstname"]')).sendKeys('John');
-        await driver.findElement(By.css('input[name="lastname"]')).sendKeys('Doe');
-        await driver.findElement(By.css('input[name="email"]')).sendKeys('jdoe@mail.com');
+        await driver.wait(until.alertIsPresent());
 
-        const filePath = getFixturePath('file.txt');
-        await driver.findElement(By.id('file')).sendKeys(filePath);
+        let alert = await driver.switchTo().alert();
+        await alert.accept();
+
+        const value = + await driver.findElement(By.id('input_value')).getText();
+        const result = Math.log(Math.abs(12*Math.sin(value)));
+
+        await driver.findElement(By.id('answer')).sendKeys(result);
 
         await driver.findElement(By.tagName('button')).click();
     }
