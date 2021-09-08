@@ -7,28 +7,18 @@ import path from 'path'
     let driver = await new Builder().forBrowser('chrome').build();
 
     try {
-        const url = 'https://SunInJuly.github.io/execute_script.html';
+        const url = 'http://suninjuly.github.io/file_input.html';
 
         await driver.get(url);
 
-        const value = + await driver.findElement(By.id('input_value')).getText();
-        const result = Math.log(Math.abs(12*Math.sin(value)));
+        await driver.findElement(By.css('input[name="firstname"]')).sendKeys('John');
+        await driver.findElement(By.css('input[name="lastname"]')).sendKeys('Doe');
+        await driver.findElement(By.css('input[name="email"]')).sendKeys('jdoe@mail.com');
 
-        const scrollScript = "return arguments[0].scrollIntoView();";
+        const filePath = getFixturePath('file.txt');
+        await driver.findElement(By.id('file')).sendKeys(filePath);
 
-        await driver.findElement(By.id('answer')).sendKeys(result.toString(10));
-
-        const checkboxInput = await driver.findElement(By.id('robotCheckbox'));
-        await driver.executeScript(scrollScript, checkboxInput);
-        await checkboxInput.click();
-
-        const radioInput = await driver.findElement(By.id('robotsRule'));
-        await driver.executeScript(scrollScript, radioInput);
-        radioInput.click();
-
-        const button = await driver.findElement(By.tagName('button'));
-        await driver.executeScript(scrollScript, button);
-        await button.click();
+        await driver.findElement(By.tagName('button')).click();
     }
     finally{
         await driver.sleep(5000);
@@ -36,8 +26,13 @@ import path from 'path'
     }
 })();
 
+function getFixturePath(fileName) {
+    return getProjectRootDirPath() + '/fixtures/' + fileName;
+}
+function getProjectRootDirPath() {
+    return path.resolve('./');
+}
 function getWebdriverAbsolutePath(driverType = 'chromedriver') {
-    const projectRootDirPath = path.resolve('./');
-    const webdriverDirPath = projectRootDirPath + '/webDrivers';
+    const webdriverDirPath = getProjectRootDirPath() + '/webDrivers';
     return webdriverDirPath + '/' + driverType;
 }
