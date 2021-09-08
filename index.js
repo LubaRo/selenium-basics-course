@@ -7,11 +7,11 @@ import path from 'path'
     let driver = await new Builder().forBrowser('chrome').build();
 
     try {
-        const url = 'http://suninjuly.github.io/math.html';
+        const url = 'http://suninjuly.github.io/get_attribute.html';
 
         await driver.get(url);
 
-        const varX = await driver.findElement(By.id('input_value')).getText();
+        const varX = await driver.findElement(By.id('treasure')).getAttribute('valuex');
         const result = Math.log(Math.abs(12*Math.sin(Number(varX))));
 
         await driver.findElement(By.id('answer')).sendKeys(result.toString(10));
@@ -22,18 +22,10 @@ import path from 'path'
         await button.click()
     }
     finally{
-        await waitForNSeconds();
+        await driver.sleep(5000);
         driver.quit()
     }
 })();
-
-function waitForNSeconds(n = 10) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve();
-      }, n * 1000);
-    });
-  }
 
 function getWebdriverAbsolutePath(driverType = 'chromedriver') {
     const projectRootDirPath = path.resolve('./');
